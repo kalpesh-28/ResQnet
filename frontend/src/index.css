@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+/* ── Base Resets ────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ── Leaflet overrides for dark theme ───────────────────────── */
+.leaflet-container {
+  background: #0f172a !important;
+  border-radius: 0.75rem;
+}
+
+/* FIX: Undo Tailwind Preflight on Leaflet elements.
+   Preflight sets img { max-width:100%; height:auto } which clips 256px tiles. */
+.leaflet-container img {
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.8) contrast(1.2);
+}
+
+.leaflet-control-zoom a {
+  background: #1e293b !important;
+  color: #94a3b8 !important;
+  border-color: #334155 !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(15, 23, 42, 0.8) !important;
+  color: #64748b !important;
+  font-size: 10px !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-popup-tip {
+  background: #1e293b !important;
+}
+
+/* ── Pulse marker ───────────────────────────────────────────── */
+.incident-marker {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2.5px solid #fff;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.7);
+}
+
+.incident-marker.critical {
+  background: #ef4444;
+  animation: marker-pulse 2s ease-in-out infinite;
+}
+
+.incident-marker.high {
+  background: #f97316;
+  animation: marker-pulse 2.5s ease-in-out infinite;
+}
+
+.incident-marker.moderate {
+  background: #eab308;
+  animation: marker-pulse 3s ease-in-out infinite;
+}
+
+@keyframes marker-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
+    transform: scale(1.15);
+  }
+}
+
+/* ── Glowing card borders ───────────────────────────────────── */
+.card-glow {
+  position: relative;
+}
+.card-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #338dff33, #8b5cf633, #338dff33);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Agent step indicators ──────────────────────────────────── */
+.step-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+.step-dot.completed {
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}
+.step-dot.active {
+  background: #338dff;
+  box-shadow: 0 0 10px rgba(51, 141, 255, 0.7);
+  animation: marker-pulse 1.2s ease-in-out infinite;
+}
+.step-dot.pending {
+  background: #334155;
+}
